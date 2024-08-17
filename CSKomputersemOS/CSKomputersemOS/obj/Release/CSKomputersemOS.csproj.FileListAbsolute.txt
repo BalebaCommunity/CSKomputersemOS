@@ -1,0 +1,9 @@
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\bin\Release\CSKomputersemOS.exe.config
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\bin\Release\CSKomputersemOS.exe
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\bin\Release\CSKomputersemOS.pdb
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.csproj.AssemblyReference.cache
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.Properties.Resources.resources
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.csproj.GenerateResource.cache
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.csproj.CoreCompileInputs.cache
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.exe
+D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Release\CSKomputersemOS.pdb
