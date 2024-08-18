@@ -1,2 +1,5 @@
 D:\Dev\Repos\CSKomputersemOS\Desktop
 D:\Dev\Repos\CSKomputersemOS\Assets\Daniilermakov.jpg
+IconPosition:Ass.txt|137|349
+IconPosition:photo_2024-08-16_15-33-00.jpg|190|226
+IconPosition:waterfox — ярлык.lnk|318|96

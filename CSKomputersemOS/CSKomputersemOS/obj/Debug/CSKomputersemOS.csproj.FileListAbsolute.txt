@@ -7,3 +7,12 @@ D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\bin\Debug\CSKomputersemOS.exe
 D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\bin\Debug\CSKomputersemOS.pdb
 D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.exe
 D:\Dev\Repos\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.pdb
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\CSKomputersemOS.exe.config
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\CSKomputersemOS.exe
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\CSKomputersemOS.pdb
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.csproj.AssemblyReference.cache
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.Properties.Resources.resources
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.csproj.GenerateResource.cache
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.csproj.CoreCompileInputs.cache
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.exe
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.pdb
