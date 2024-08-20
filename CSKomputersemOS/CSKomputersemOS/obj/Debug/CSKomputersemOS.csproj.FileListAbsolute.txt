@@ -16,3 +16,14 @@ D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKompute
 D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.csproj.CoreCompileInputs.cache
 D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.exe
 D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomputersemOS.pdb
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Buffers.dll
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Memory.dll
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Numerics.Vectors.dll
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Text.Encoding.CodePages.dll
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Buffers.xml
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Memory.xml
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Numerics.Vectors.xml
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\bin\Debug\System.Text.Encoding.CodePages.xml
+D:\Dev\CSKomputersemOS_Clone\CSKomputersemOS\CSKomputersemOS\obj\Debug\CSKomput.20A38509.Up2Date

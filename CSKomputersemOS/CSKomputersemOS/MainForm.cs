@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Button = System.Windows.Forms.Button;
 using TextBox = System.Windows.Forms.TextBox;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace CSKomputersemOS
 {
@@ -67,7 +68,9 @@ namespace CSKomputersemOS
         // Constructor
         public MainForm()
         {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             InitializeComponent();
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             this.FormClosing += MainForm_FormClosing;
             this.Resize += MainForm_Resize;
             LoadConfiguration();
@@ -187,8 +190,16 @@ namespace CSKomputersemOS
         // Methods
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SaveIconPositions();
+            try
+            {
+                SaveIconPositions();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving icon positions: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private void LoadConfiguration()
         {
@@ -201,7 +212,7 @@ namespace CSKomputersemOS
                     {
                         string[] config = File.ReadAllLines(configPath);
                         DesktopPath = config[0];
-                        BackgroundImagePath = config[1];
+                        BackgroundImagePath = Path.Combine(Application.StartupPath, "UI", "cskos_bg.png"); // Предполагаемое имя файла
                     }
                     else
                     {
@@ -214,7 +225,7 @@ namespace CSKomputersemOS
             {
                 string[] config = File.ReadAllLines(configPath);
                 DesktopPath = config[0];
-                BackgroundImagePath = config[1];
+                BackgroundImagePath = Path.Combine(Application.StartupPath, "UI", "cskos_bg.png"); // Предполагаемое имя файла
 
                 // Load icon positions
                 iconPositions.Clear(); // Clear existing positions before loading
@@ -254,20 +265,22 @@ namespace CSKomputersemOS
             // Set background image
             try
             {
-                if (File.Exists(BackgroundImagePath))
+                string backgroundPath = Path.Combine(Application.StartupPath, "UI", "cskos_bg.png");
+                if (File.Exists(backgroundPath))
                 {
-                    this.BackgroundImage = Image.FromFile(BackgroundImagePath);
+                    this.BackgroundImage = Image.FromFile(backgroundPath);
                     this.BackgroundImageLayout = ImageLayout.Stretch;
                 }
                 else
                 {
-                    throw new FileNotFoundException("Background image file not found.");
+                    MessageBox.Show($"Фоновое изображение не найдено по пути: {backgroundPath}", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.BackColor = Color.LightSkyBlue; // Цвет по умолчанию, если изображение не найдено
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading background image: {ex.Message}");
-                this.BackColor = Color.LightSkyBlue; // Fallback color
+                MessageBox.Show($"Ошибка при загрузке фонового изображения: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.BackColor = Color.LightSkyBlue; // Цвет по умолчанию в случае ошибки
             }
 
             desktopPanel = new Panel
@@ -276,6 +289,7 @@ namespace CSKomputersemOS
                 AutoScroll = true,
                 BackColor = Color.Transparent
             };
+
             desktopPanel.GetType().GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(desktopPanel, true, null);
             this.Controls.Add(desktopPanel);
 
@@ -510,6 +524,19 @@ namespace CSKomputersemOS
 
             desktopPanel.Controls.Add(icon);
             desktopPanel.Controls.Add(label);
+
+            // Добавляем проверку на кириллицу и логирование
+            if (ContainsCyrillic(fileName))
+            {
+                Console.WriteLine($"Created icon for file with Cyrillic name: {fileName}");
+                Console.WriteLine($"Icon location: {icon.Location}, Label location: {label.Location}");
+            }
+        }
+
+        // Вспомогательный метод для проверки наличия кириллицы в строке
+        private bool ContainsCyrillic(string text)
+        {
+            return text.Any(c => (c >= 'А' && c <= 'я') || c == 'Ё' || c == 'ё');
         }
 
 
@@ -540,29 +567,41 @@ namespace CSKomputersemOS
 
         private void SaveIconPositions()
         {
+            if (desktopPanel == null || desktopPanel.Controls == null)
+            {
+                return;
+            }
+
             List<string> iconPositions = new List<string>();
             foreach (Control control in desktopPanel.Controls)
             {
                 if (control is PictureBox)
                 {
-                    string fileName = GetAssociatedLabel(control).Text;
-                    iconPositions.Add($"{fileName}|{control.Location.X}|{control.Location.Y}");
+                    Label label = GetAssociatedLabel(control);
+                    if (label != null)
+                    {
+                        string fileName = label.Text;
+                        iconPositions.Add($"{fileName}|{control.Location.X}|{control.Location.Y}");
+                    }
                 }
             }
 
             string configPath = Path.Combine(Application.StartupPath, "config.txt");
-            List<string> configLines = File.ReadAllLines(configPath).ToList();
-
-            // Remove existing icon positions
-            configLines.RemoveAll(line => line.StartsWith("IconPosition:"));
-
-            // Add new icon positions
-            foreach (string position in iconPositions)
+            if (File.Exists(configPath))
             {
-                configLines.Add($"IconPosition:{position}");
-            }
+                List<string> configLines = File.ReadAllLines(configPath).ToList();
 
-            File.WriteAllLines(configPath, configLines);
+                // Remove existing icon positions
+                configLines.RemoveAll(line => line.StartsWith("IconPosition:"));
+
+                // Add new icon positions
+                foreach (string position in iconPositions)
+                {
+                    configLines.Add($"IconPosition:{position}");
+                }
+
+                File.WriteAllLines(configPath, configLines);
+            }
         }
 
         private void DeleteFileOrFolder(Control control)
@@ -626,10 +665,9 @@ namespace CSKomputersemOS
             }
         }
 
-
         private Label GetAssociatedLabel(Control control)
         {
-            if (control is PictureBox)
+            if (control is PictureBox && desktopPanel != null)
             {
                 return desktopPanel.Controls.OfType<Label>()
                     .FirstOrDefault(l => l.Location.X == control.Location.X && l.Location.Y == control.Location.Y + 35);
@@ -715,6 +753,28 @@ namespace CSKomputersemOS
                         else
                         {
                             associatedControl.Location = new Point(newLocation.X, newLocation.Y - 35);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Associated control not found for dragged control at position {newLocation}");
+                        // Здесь вы можете создать новую метку, если она не существует
+                        if (draggedControl is PictureBox)
+                        {
+                            string fileName = Path.GetFileName(GetAssociatedPath(draggedControl));
+                            Label newLabel = new Label
+                            {
+                                Text = fileName,
+                                AutoSize = true,
+                                MaximumSize = new Size(64, 0),
+                                BackColor = Color.Transparent,
+                                ForeColor = Color.White,
+                                Location = new Point(newLocation.X, newLocation.Y + 35)
+                            };
+                            desktopPanel.Controls.Add(newLabel);
+                            CreateIconContextMenu(newLabel);
+                            newLabel.MouseDown += Control_MouseDown;
+                            newLabel.MouseUp += Control_MouseUp;
                         }
                     }
 
@@ -1001,8 +1061,12 @@ namespace CSKomputersemOS
             {
                 if (control is PictureBox)
                 {
-                    string fileName = GetAssociatedLabel(control).Text;
-                    currentPositions[fileName] = control.Location;
+                    Label associatedLabel = GetAssociatedLabel(control);
+                    if (associatedLabel != null)
+                    {
+                        string fileName = associatedLabel.Text;
+                        currentPositions[fileName] = control.Location;
+                    }
                 }
             }
 
@@ -1014,14 +1078,40 @@ namespace CSKomputersemOS
             {
                 if (control is PictureBox)
                 {
-                    string fileName = GetAssociatedLabel(control).Text;
-                    if (currentPositions.ContainsKey(fileName))
+                    Label associatedLabel = GetAssociatedLabel(control);
+                    if (associatedLabel != null)
                     {
-                        control.Location = currentPositions[fileName];
-                        GetAssociatedLabel(control).Location = new Point(control.Location.X, control.Location.Y + 35);
+                        string fileName = associatedLabel.Text;
+                        if (currentPositions.ContainsKey(fileName))
+                        {
+                            control.Location = currentPositions[fileName];
+                            associatedLabel.Location = new Point(control.Location.X, control.Location.Y + 35);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Associated label not found for control at position {control.Location}");
+                        // Здесь вы можете создать новую метку, если она не существует
+                        string fileName = Path.GetFileName(GetAssociatedPath(control));
+                        Label newLabel = new Label
+                        {
+                            Text = fileName,
+                            AutoSize = true,
+                            MaximumSize = new Size(64, 0),
+                            BackColor = Color.Transparent,
+                            ForeColor = Color.White,
+                            Location = new Point(control.Location.X, control.Location.Y + 35)
+                        };
+                        desktopPanel.Controls.Add(newLabel);
+                        CreateIconContextMenu(newLabel);
+                        newLabel.MouseDown += Control_MouseDown;
+                        newLabel.MouseUp += Control_MouseUp;
                     }
                 }
             }
+
+            // Обновляем позиции иконок в конфигурационном файле
+            SaveIconPositions();
         }
 
         private void ChangeBackground()
